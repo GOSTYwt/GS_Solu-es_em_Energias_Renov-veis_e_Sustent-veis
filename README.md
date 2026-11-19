@@ -5,11 +5,7 @@
 > **Contribuição de SERS:** todo o conteúdo deste repositório (pastas `docs/`, `data/`, `src/` e `dashboard/`) corresponde à disciplina SERS. Se o repositório for compartilhado com outras disciplinas, esta contribuição está identificada por este README.
 
 ## Integrantes
-| Nome completo | RM |
-|---|---|
-| _preencher_ | _preencher_ |
-| _preencher_ | _preencher_ |
-| _preencher_ | _preencher_ |
+| Nome completo: Erick Vieiro Martins | RM: 575683 |
 
 ## Problema
 Uma praça comunitária com 20 postes de iluminação de vapor de sódio (150 W) acesos 12 h por noite, sempre na intensidade máxima e sem nenhum dado de consumo: **~1.241 kWh/mês e ~R$ 1.055/mês de energia**. Detalhes em [`docs/01_diagnostico.md`](docs/01_diagnostico.md).
