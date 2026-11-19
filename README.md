@@ -4,7 +4,7 @@
 
 > **Contribuição de SERS:** todo o conteúdo deste repositório (pastas `docs/`, `data/`, `src/` e `dashboard/`) corresponde à disciplina SERS. Se o repositório for compartilhado com outras disciplinas, esta contribuição está identificada por este README.
 
-## Integrantes
+## Integrante
 | Nome completo: Erick Vieiro Martins | RM: 575683 |
 
 ## Problema
