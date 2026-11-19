@@ -1,0 +1,6 @@
+id,nome,renovavel,demanda_iluminacao_kwh_mes,energia_da_rede_kwh_mes,economia_kwh_mes,economia_pct,participacao_renovavel_pct,capex_rs,opex_rs_ano,custo_energia_rs_mes,economia_rs_mes,emissoes_kg_ano,emissoes_evitadas_kg_ano,emissoes_evitadas_cenario_alto_kg_ano,custo_total_10a_rs,payback_anos
+A0,Convencional (VSAP 150 W) - linha de base,False,1241.0,1241.0,0.0,0.0,0.0,0,500,1054.85,0.0,367.8,0.0,0.0,131582,
+A1,LED 60 W (retrofit simples),False,438.0,438.0,803.0,64.7,0.0,9900,100,372.3,715.88,129.8,238.0,1218.0,55576,1.2
+A2,LED + dimerização por sensores + monitoramento,False,262.8,262.8,978.2,78.8,0.0,16720,100,223.38,864.8,77.9,289.9,1483.7,44526,1.6
+A3,LED + dimerização + microgeração FV (recomendada),True,262.8,0.0,1241.0,100.0,100.0,28420,217,0.0,1078.43,0.0,367.8,1882.4,30590,2.2
+A4,Luminárias solares autônomas (off-grid),True,0.0,0.0,1241.0,100.0,100.0,78980,2600,0.0,879.85,0.0,367.8,1882.4,104980,7.5

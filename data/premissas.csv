@@ -1,0 +1,27 @@
+parametro,valor,unidade,fonte_ou_justificativa
+n_postes,20,un,Premissa: praça comunitária de porte médio (~1,5 ha) com 20 pontos de luz
+horas_noite,12,h/dia,Premissa: iluminação ligada do pôr ao nascer do sol (média anual no Sudeste)
+dias_mes,30.4167,dias,365/12 (mês médio)
+potencia_sodio_lampada,150,W,Premissa: lâmpada vapor de sódio alta pressão (VSAP) comum em iluminação pública
+potencia_sodio_total,170,W,Lâmpada 150 W + perdas do reator (~13%) - premissa
+potencia_led,60,W,Premissa: luminária LED pública 60 W (eficácia ~130 lm/W; nível de iluminância equivalente a verificar pela NBR 5101)
+dimer_horas_pleno,4,h/dia,Premissa: 100% de fluxo enquanto há movimento/horário de pico (18h-22h)
+dimer_nivel_reduzido,0.40,fração,Premissa: 40% do fluxo nas demais horas sem presença detectada
+tarifa,0.85,R$/kWh,Premissa: tarifa de iluminação pública (B4) com tributos - ATUALIZAR com a distribuidora/ANEEL
+fator_emissao,0.0247,kg CO2e/kWh,Média Jan-Abr/2025 do SIN (23.7; 24.8; 21.5; 28.9 kg/MWh) - MCTI/SIRENE
+fator_emissao_cenario_alto,0.1264,kg CO2e/kWh,SIN média anual 2021 (0.1264 tCO2e/MWh) - cenário de sensibilidade
+hsp,4.5,kWh/m2/dia,Aproximação para o estado de SP (CRESESB/SunData; Atlas Brasileiro de Energia Solar) - verificar no local
+performance_ratio,0.78,fração,Premissa usual para sistemas FV conectados à rede
+modulo_fv,650,Wp,Premissa: módulo comercial de ~650 Wp
+custo_fv,4.50,R$/Wp,Premissa: sistema FV pequeno instalado (mercado BR 2025/26) - cotar
+custo_luminaria_led,450,R$/un,Premissa: luminária LED 60 W (sem dimerização)
+custo_luminaria_led_dimer,550,R$/un,Premissa: luminária LED 60 W com driver dimerizável
+custo_sensor_presenca,120,R$/un,Premissa: sensor radar/PIR por poste
+custo_gateway_medidor,1800,R$,Premissa: gateway + medidor de energia + conectividade (1 unidade)
+custo_luminaria_solar,3500,R$/un,Premissa: luminária solar autônoma 60 W com painel e bateria LiFePO4
+instalacao_pct,0.10,fração,Premissa: mão de obra e instalação sobre o capex de equipamentos
+opex_sodio,25,R$/poste/ano,Premissa: troca de lâmpada/reator e mão de obra (vida ~24.000 h)
+opex_led,5,R$/poste/ano,Premissa: LED vida ~50.000 h (~11 anos)
+opex_fv_pct,0.01,fração/ano,Premissa: limpeza e inspeção = 1% do capex FV/ano
+opex_solar_autonoma,130,R$/poste/ano,Premissa: troca de bateria (R$ 900 a cada ~7 anos) + manutenção
+horizonte,10,anos,Período de referência comum para comparar as alternativas
