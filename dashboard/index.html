@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SERS · Praça Solar Inteligente · Neighborhood Action Dashboard</title>
+<style>
+:root{--bg:#f6f7f4;--card:#fff;--tx:#1b2a1f;--mut:#5d6b61;--bd:#dfe4dc;--ac:#2e7d32;--ac2:#f9a825;--bad:#c62828}
+@media(prefers-color-scheme:dark){:root{--bg:#121813;--card:#1c241e;--tx:#e8efe9;--mut:#9fb0a3;--bd:#2c3a2f;--ac:#66bb6a;--ac2:#ffca28;--bad:#ef5350}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,Segoe UI,sans-serif}
+main{max-width:1000px;margin:auto;padding:20px}h1{font-size:1.5rem;margin:.2rem 0}h2{font-size:1.05rem;margin:0 0 10px}
+.sub{color:var(--mut);margin:0 0 16px}.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:12px}
+.k{font-size:1.5rem;font-weight:700;color:var(--ac)}.l{color:var(--mut);font-size:.8rem}
+select{padding:6px 10px;border-radius:8px;border:1px solid var(--bd);background:var(--card);color:var(--tx)}
+.row{display:flex;align-items:center;gap:8px;margin:6px 0;font-size:.85rem}.row .n{width:200px;flex:none}
+.bar{height:16px;border-radius:4px;background:var(--ac)}.bar.b{background:var(--ac2)}
+.wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.85rem}th,td{padding:6px 8px;border-bottom:1px solid var(--bd);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}tr.sel td{background:color-mix(in srgb,var(--ac) 12%,transparent)}
+.aviso{font-size:.8rem;color:var(--mut)}
+</style></head><body><main>
+<h1>Praça Solar Inteligente</h1>
+<p class="sub">Contribuição de SERS ao Neighborhood Action Dashboard · dados estimados a partir de premissas (ver <code>data/premissas.csv</code>)</p>
+<div class="card"><label>Alternativa: <select id="alt"></select></label> <span class="l" id="nome"></span></div>
+<div class="grid" id="kpis"></div>
+<div class="card"><h2>Consumo da rede (kWh/mês) por alternativa</h2><div id="cons"></div></div>
+<div class="card"><h2>Custo total em 10 anos (R$) - investimento + operação + energia</h2><div id="custo"></div></div>
+<div class="card"><h2>Alternativa recomendada (A3): demanda × geração FV por mês (kWh)</h2><div id="serie"></div></div>
+<div class="card wrap"><h2>Comparação completa</h2><table id="tab"></table></div>
+<p class="aviso" id="aviso"></p>
+</main>
+<script src="data.js"></script>
+<script>
+const D=window.SERS_DATA,A=D.alternativas,f=(v,d=0)=>v==null?'—':v.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});
+const sel=document.getElementById('alt');
+Object.keys(A).forEach(k=>sel.add(new Option(k+' · '+A[k].nome,k)));sel.value='A3';
+function bars(el,key,unit,cls){const m=Math.max(...Object.values(A).map(a=>a[key]),1);
+ document.getElementById(el).innerHTML=Object.entries(A).map(([k,a])=>`<div class="row"><span class="n">${k} · ${a.nome.split('(')[0].trim()}</span><div class="bar ${cls||''}" style="width:${Math.max(2,a[key]/m*55)}%"></div><b>${f(a[key])} ${unit}</b></div>`).join('')}
+function render(){const a=A[sel.value];document.getElementById('nome').textContent=a.nome;
+ const kp=[['Energia da rede',f(a.energia_da_rede_kwh_mes,1)+' kWh/mês'],['Economia de energia',f(a.economia_kwh_mes,1)+' kWh/mês ('+f(a.economia_pct,1)+'%)'],
+ ['Redução de custo','R$ '+f(a.economia_rs_mes,2)+'/mês'],['Participação renovável',f(a.participacao_renovavel_pct,1)+' %'],
+ ['Emissões evitadas',f(a.emissoes_evitadas_kg_ano,1)+' kg CO₂e/ano'],['Investimento (capex)','R$ '+f(a.capex_rs)],['Payback simples',a.payback_anos==null?'—':f(a.payback_anos,1)+' anos']];
+ document.getElementById('kpis').innerHTML=kp.map(([l,v])=>`<div class="card"><div class="k">${v}</div><div class="l">${l}</div></div>`).join('');
+ document.querySelectorAll('#tab tr[data-k]').forEach(r=>r.classList.toggle('sel',r.dataset.k===sel.value))}
+bars('cons','energia_da_rede_kwh_mes','kWh');bars('custo','custo_total_10a_rs','R$','b');
+const S=D.serie_mensal_A3,mx=Math.max(...S.map(s=>Math.max(s.demanda_kwh,s.geracao_fv_kwh)));
+document.getElementById('serie').innerHTML=`<svg viewBox="0 0 720 190" width="100%" role="img" aria-label="Demanda e geração por mês">`+S.map((s,i)=>{const x=10+i*59,h1=s.demanda_kwh/mx*140,h2=s.geracao_fv_kwh/mx*140;
+ return `<rect x="${x}" y="${150-h1}" width="22" height="${h1}" fill="var(--ac2)"/><rect x="${x+24}" y="${150-h2}" width="22" height="${h2}" fill="var(--ac)"/><text x="${x+23}" y="168" font-size="11" text-anchor="middle" fill="currentColor">${s.mes}</text>`}).join('')+`</svg><div class="l">Amarelo: demanda da praça (LED + dimerização) · Verde: geração FV. Meses com déficit usam créditos de meses excedentes.</div>`;
+const cols=[['Alternativa',null],['Rede kWh/mês','energia_da_rede_kwh_mes'],['Economia %','economia_pct'],['Renovável %','participacao_renovavel_pct'],['Capex R$','capex_rs'],['Custo 10a R$','custo_total_10a_rs'],['Payback (anos)','payback_anos'],['kg CO₂e evit./ano','emissoes_evitadas_kg_ano']];
+document.getElementById('tab').innerHTML='<tr>'+cols.map(c=>`<th>${c[0]}</th>`).join('')+'</tr>'+Object.entries(A).map(([k,a])=>`<tr data-k="${k}"><td>${k}</td>`+cols.slice(1).map(c=>`<td>${f(a[c[1]],c[1]==='payback_anos'?1:(a[c[1]]%1?1:0))}</td>`).join('')+'</tr>').join('');
+document.getElementById('aviso').textContent=D.aviso+' Referência: '+D.referencia+'.';
+sel.onchange=render;render();
+</script></body></html>
